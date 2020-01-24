@@ -28,9 +28,11 @@ def classify(txt):
     vect=pickle.load(open('../ML_Models/saved_classifiers/vectorizer.pickle','rb'))
     offensive_list=(pd.read_csv("../Datasets/Offensive_word_list.txt")).values.flatten()
     cd=cleanData(txt)
-    # for w in offensive_list:
-    #     if w in cd.split(' '):
-    #         print(w)
+    clean_list=cd.split(' ')
+    for w in offensive_list:
+        if w in cd.split(' '):
+             clean_list.replace(w,"*"*len(w))
+    cd=' '.join(clean_list)
     pred=mnb.predict(vect.transform([cd]))
     return pred
 
