@@ -12,27 +12,27 @@ import json
 
 @csrf_exempt
 def test(request):
-    print(request.is_ajax())
-    print(request)
+    # print(request.is_ajax())
+    # print(request)
     json_text = json.loads(request.body)
-    body_text = json_text["body_text"].split("\n")
     body_html  = json_text["body_html"]
+    cens_txt=word_tokenize(json_text["body_text"])
+    offensive_list=(pd.read_csv("../Datasets/Offensive_word_list.txt")).values.flatten()
+    for i in range(len(cens_txt)):
+        if cens_txt[i] in offensive_list:
+            #print(cens_txt[i])
+            cens_txt[i]="*"*len(cens_txt[i])
+    body_text = sent_tokenize(' '.join(cens_txt))
     for e in body_text:
         if(classify(e)[0]):
-            print("{} --> {}".format(e,classify(e)[0]))
+            #print("{} --> {}".format(e,classify(e)[0]))
             body_html.replace(e,"")
-    return HttpResponse(body_html)
+    return HttpResponse(body_text)
 
 def classify(txt):
-    mnb=pickle.load(open('../ML_Models/saved_classifiers/alt_model.pickle','rb'))
-    vect=pickle.load(open('../ML_Models/saved_classifiers/vectorizer.pickle','rb'))
-    offensive_list=(pd.read_csv("../Datasets/Offensive_word_list.txt")).values.flatten()
+    mnb=pickle.load(open('../ML_Models/alt_model.pickle','rb'))
+    vect=pickle.load(open('../ML_Models/vectorizer.pickle','rb'))
     cd=cleanData(txt)
-    clean_list=cd.split(' ')
-    for w in offensive_list:
-        if w in cd.split(' '):
-             clean_list.replace(w,"*"*len(w))
-    cd=' '.join(clean_list)
     pred=mnb.predict(vect.transform([cd]))
     return pred
 
