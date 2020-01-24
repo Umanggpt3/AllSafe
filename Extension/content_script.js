@@ -10,8 +10,8 @@ let body_doc = document.body.innerHTML;
 //     body_doc: body_doc
 // });
 let json_data = {
-    "html_text" : text,
-    "body_doc" : body_doc
+    abc : text,
+    def : body_doc
 }
 let xhr = new XMLHttpRequest();
 let theUrl = "http://127.0.0.1:8000/testing/";
@@ -26,4 +26,4 @@ xhr.onreadystatechange = function() {
     }
 };
 xhr.setRequestHeader("Content-Type","application/json;charset=UTF-8");
-xhr.send(json_data);
+xhr.send(JSON.stringify(json_data));
