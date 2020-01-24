@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Hello World</title>
+        <title>AllSafe</title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     </head>
-    <body>
-        <p>All Safe - Content Moderation Extension</p>
+    <body style="width: 300px; height: 50px;">
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col-xs-6 ml-4">
+                    <input id="turnOnOff" name="onAndOff" type="checkbox"/>
+                </div>
+                <!-- <div class="col-xs-6 ml-4">
+                    <label for="turnOnOff" class="label-primary">Turn ON/OFF?</label>
+                </div> -->
+            </div>
+        </div>
         <script src="popup.js"></script>
+        <script src="./jquery-3.4.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>
