@@ -2,7 +2,7 @@ let text = document.body.innerText;
 console.log(text);
 console.log(typeof text);
 
-let text_string = "html_doc = " + text;
+let text_string = "html_doc= " + text;
 let xhr = new XMLHttpRequest();
 let theUrl = "http://127.0.0.1:8000/testing/";
 xhr.open("POST", theUrl, true);
