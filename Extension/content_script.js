@@ -5,7 +5,14 @@ console.log(typeof text);
 console.log(document.body.innerHTML);
 let body_doc = document.body.innerHTML;
 
-let text_string = "html_text=" + text + "body_doc=" + body_doc;
+// let text_string = "html_text=" + JSON.jsonify({
+//     html_text: text,
+//     body_doc: body_doc
+// });
+let json_data = {
+    "html_text" : text,
+    "body_doc" : body_doc
+}
 let xhr = new XMLHttpRequest();
 let theUrl = "http://127.0.0.1:8000/testing/";
 xhr.open("POST", theUrl, true);
@@ -18,8 +25,5 @@ xhr.onreadystatechange = function() {
         console.log("Not Entered");
     }
 };
-xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
-xhr.send(JSON.stringify({
-    html_text: text,
-    body_doc: body_doc
-}));
+xhr.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+xhr.send(json_data);

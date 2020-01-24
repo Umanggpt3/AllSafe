@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt 
+import json
 # Create your views here.
 
 @csrf_exempt
 def test(request):
-    text = request.POST.get("html_text")
-    body = request.POST.get("body_doc")
+    print(request.is_ajax())
+    json_text = json.loads(request.body)
     print(request.method)
-    print(text,"\n\n\n\n\n\n\n\n\n\n\n")
-    print(body)
+    print(json_text)
     return HttpResponse("Request Recieved!")
