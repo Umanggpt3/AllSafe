@@ -8,33 +8,34 @@ from nltk.tokenize import word_tokenize,sent_tokenize
 import pickle
 import pandas as pd
 import json
+from bs4 import BeautifulSoup
 # Create your views here.
 
 @csrf_exempt
 def test(request):
-    # print(request.is_ajax())
-    # print(request)
-    json_text = json.loads(request.body)
-    body_html  = json_text["body_html"]
-    cens_txt=word_tokenize(json_text["body_text"])
     offensive_list=(pd.read_csv("../Datasets/Offensive_word_list.txt")).values.flatten()
-    for i in range(len(cens_txt)):
-        if cens_txt[i] in offensive_list:
-            #print(cens_txt[i])
-            cens_txt[i]="*"*len(cens_txt[i])
-    body_text = sent_tokenize(' '.join(cens_txt))
-    for e in body_text:
-        if(classify(e)[0]):
-            #print("{} --> {}".format(e,classify(e)[0]))
-            body_text.replace(e,"")
-    return HttpResponse(body_text)
-
-def classify(txt):
     mnb=pickle.load(open('../ML_Models/alt_model.pickle','rb'))
     vect=pickle.load(open('../ML_Models/vectorizer.pickle','rb'))
+    body_html  = (json.loads(request.body))["body_html"]
+    b_text=BeautifulSoup(body_html).get_text() 
+    txt_list=sent_tokenize(b_text)
+    for s in txt_list:
+        if classify(s,mnb,vect):
+            body_html=body_html.replace(s,"")
+    for w in word_tokenize(body_html):
+        if w.lower() in offensive_list:
+            if w=='class':
+                continue
+            body_html=body_html.replace((" "+w+" "),str("*"*len(w)))
+    
+    #print(body_html)
+    body_html=body_html.replace("<script","<script async ")
+    return HttpResponse(body_html)    
+
+def classify(txt,mnb,vect):
     cd=cleanData(txt)
     pred=mnb.predict(vect.transform([cd]))
-    return pred
+    return pred[0]
 
 def cleanData(txt):
     w_list=word_tokenize(txt)
