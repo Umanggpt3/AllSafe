@@ -16,11 +16,12 @@ def test(request):
     print(request.is_ajax())
     print(request)
     json_text = json.loads(request.body)
-    print(json_text)
-    # print(request.method)
-    # texts = json.loads(json_text)['body_text']
-    # print(json_text["body_text"])
-    print(classify("You are sso dumb, fool"))
+    body_text = json_text["body_text"].split("\n")
+
+    body_html  = json_text["body_html"]
+    for e in body_text:
+        if(classify(e)[0]):
+            print("{} --> {}".format(e,classify(e)[0]))
     return HttpResponse("Request Recieved!")
 
 def classify(txt):
@@ -28,9 +29,9 @@ def classify(txt):
     vect=pickle.load(open('../ML_Models/saved_classifiers/vectorizer.pickle','rb'))
     offensive_list=(pd.read_csv("../Datasets/Offensive_word_list.txt")).values.flatten()
     cd=cleanData(txt)
-    for w in offensive_list:
-        if w in cd:
-            print(w)
+    # for w in offensive_list:
+    #     if w in cd.split(' '):
+    #         print(w)
     pred=mnb.predict(vect.transform([cd]))
     return pred
 

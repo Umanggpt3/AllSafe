@@ -10,7 +10,7 @@ let body_doc = document.body.innerHTML;
 //     body_doc: body_doc
 // });
 let json_data = {
-    html_text : text,
+    body_text : text,
     body_html : body_doc
 }
 let xhr = new XMLHttpRequest();
