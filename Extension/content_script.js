@@ -10,6 +10,10 @@ chrome.storage.local.get(['onOffkey'], function (result) {
         }
         let xhr = new XMLHttpRequest();
         let theUrl = "http://127.0.0.1:8000/testing/";
+        chrome.storage.local.get(['bullykey'], function (result) {
+            if (result.bullykey == 1)
+                theUrl = "http://127.0.0.1:8000/testing/bully";
+        })
         xhr.open("POST", theUrl, true);
         let r;
         xhr.onreadystatechange = function() {
