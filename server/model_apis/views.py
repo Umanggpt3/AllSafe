@@ -5,7 +5,6 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize,sent_tokenize
-
 import pickle
 import pandas as pd
 import json
@@ -17,7 +16,6 @@ def test(request):
     print(request)
     json_text = json.loads(request.body)
     body_text = json_text["body_text"].split("\n")
-
     body_html  = json_text["body_html"]
     for e in body_text:
         if(classify(e)[0]):
@@ -26,7 +24,7 @@ def test(request):
     return HttpResponse(body_html)
 
 def classify(txt):
-    mnb=pickle.load(open('../ML_Models/saved_classifiers/mnb.pickle','rb'))
+    mnb=pickle.load(open('../ML_Models/saved_classifiers/alt_model.pickle','rb'))
     vect=pickle.load(open('../ML_Models/saved_classifiers/vectorizer.pickle','rb'))
     offensive_list=(pd.read_csv("../Datasets/Offensive_word_list.txt")).values.flatten()
     cd=cleanData(txt)
