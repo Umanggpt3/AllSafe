@@ -10,8 +10,8 @@ let body_doc = document.body.innerHTML;
 //     body_doc: body_doc
 // });
 let json_data = {
-    abc : text,
-    def : body_doc
+    html_text : text,
+    body_html : body_doc
 }
 let xhr = new XMLHttpRequest();
 let theUrl = "http://127.0.0.1:8000/testing/";
