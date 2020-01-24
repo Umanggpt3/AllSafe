@@ -9,6 +9,7 @@ import pickle
 import pandas as pd
 import json
 from bs4 import BeautifulSoup
+import re
 # Create your views here.
 
 @csrf_exempt
@@ -17,25 +18,25 @@ def test(request):
     mnb=pickle.load(open('../ML_Models/alt_model.pickle','rb'))
     vect=pickle.load(open('../ML_Models/vectorizer.pickle','rb'))
     body_html  = (json.loads(request.body))["body_html"]
-    b_text=BeautifulSoup(body_html).get_text() 
+    b_text=BeautifulSoup(body_html,"lxml").get_text() 
     txt_list=sent_tokenize(b_text)
+    count=0
     for s in txt_list:
-        if classify(s,mnb,vect):
-            body_html=body_html.replace(s,"")
+        #print("{} --> {}".format(s,classify(s,mnb,vect)))
+        if classify(s,mnb,vect)[0]!='False':
+            count=count+1
+            body_html=body_html.replace(s,"")        
     for w in word_tokenize(body_html):
         if w.lower() in offensive_list:
-            if w=='class':
-                continue
-            body_html=body_html.replace((" "+w+" "),str("*"*len(w)))
-    
-    #print(body_html)
+            pattern=re.compile(r"([^A-Za-z<>]){}([^A-Za-z<>])".format(w))
+            body_html=re.sub(pattern, str("*"*len(w)),body_html)
     body_html=body_html.replace("<script","<script async ")
     return HttpResponse(body_html)    
 
 def classify(txt,mnb,vect):
     cd=cleanData(txt)
     pred=mnb.predict(vect.transform([cd]))
-    return pred[0]
+    return pred
 
 def cleanData(txt):
     w_list=word_tokenize(txt)
