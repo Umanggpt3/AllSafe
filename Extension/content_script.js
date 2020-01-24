@@ -1,6 +1,7 @@
-chrome.storage.local.get(['key'], function (result) {
+chrome.storage.local.get(['onOffkey'], function (result) {
     //console.log("Value currently is " + result.key);
-    if (result.key == 1) {
+    if (result.onOffkey == 1) {
+
         let text = document.body.innerText;
         let body_doc = document.documentElement.innerHTML;
         let json_data = {
