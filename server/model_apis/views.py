@@ -4,7 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.stem import PorterStemmer
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize,sent_tokenize
+
 import pickle
 import pandas as pd
 import json
@@ -15,8 +16,10 @@ def test(request):
     print(request.is_ajax())
     print(request)
     json_text = json.loads(request.body)
-    print(request.method)
     print(json_text)
+    # print(request.method)
+    # texts = json.loads(json_text)['body_text']
+    # print(json_text["body_text"])
     print(classify("You are sso dumb, fool"))
     return HttpResponse("Request Recieved!")
 
