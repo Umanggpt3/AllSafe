@@ -14,24 +14,44 @@ import re
 
 @csrf_exempt
 def test(request):
-    offensive_list=(pd.read_csv("../Datasets/Offensive_word_list.txt")).values.flatten()
+    flag=(json.loads(request.body))["flag"]
+    body_html  = (json.loads(request.body))["body_html"]
+    print("bully content moderation")
+    offensive_list=(pd.read_csv("../Datasets/Offensive_word_list_en.csv")).values.flatten()
     mnb=pickle.load(open('../ML_Models/alt_model.pickle','rb'))
     vect=pickle.load(open('../ML_Models/vectorizer.pickle','rb'))
-    body_html  = (json.loads(request.body))["body_html"]
     b_text=BeautifulSoup(body_html,"lxml").get_text() 
     txt_list=sent_tokenize(b_text)
     count=0
-    for s in txt_list:
-        #print("{} --> {}".format(s,classify(s,mnb,vect)))
-        if classify(s,mnb,vect)[0]!='False':
-            count=count+1
-            body_html=body_html.replace(s,"")        
+    print(flag)
+    if flag == 1:
+        print("classifier chal rha hai")
+        for s in txt_list:
+            #print("{} --> {}".format(s,classify(s,mnb,vect)))
+            if classify(s,mnb,vect)[0]!='False':
+                count=count+1
+                body_html=body_html.replace(s,"")        
     for w in word_tokenize(body_html):
         if w.lower() in offensive_list:
             pattern=re.compile(r"([^A-Za-z<>]){}([^A-Za-z<>])".format(w))
             body_html=re.sub(pattern, str("*"*len(w)),body_html)
     body_html=body_html.replace("<script","<script async ")
     return HttpResponse(body_html)    
+
+# @csrf_exempt
+# def test(request):
+#     body_html  = (json.loads(request.body))["body_html"]
+#     print("only content moderation")
+#     offensive_list=(pd.read_csv("../Datasets/Offensive_word_list_en.csv")).values.flatten()
+#     b_text=BeautifulSoup(body_html,"lxml").get_text() 
+#     txt_list=sent_tokenize(b_text)
+#     count=0
+#     for w in word_tokenize(body_html):
+#         if w.lower() in offensive_list:
+#             pattern=re.compile(r"([^A-Za-z<>]){}([^A-Za-z<>])".format(w))
+#             body_html=re.sub(pattern, str("*"*len(w)),body_html)
+#     body_html=body_html.replace("<script","<script async ")
+#     return HttpResponse(body_html)    
 
 def classify(txt,mnb,vect):
     cd=cleanData(txt)
