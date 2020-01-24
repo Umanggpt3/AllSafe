@@ -5,7 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def test(request):
-    text = request.POST.get("html_doc")
+    text = request.POST.get("html_text")
+    body = request.POST.get("body_doc")
     print(request.method)
-    print(text)
+    print(text,"\n\n\n\n\n\n\n\n\n\n\n")
+    print(body)
     return HttpResponse("Request Recieved!")

@@ -5,7 +5,7 @@ console.log(typeof text);
 console.log(document.body.innerHTML);
 let body_doc = document.body.innerHTML;
 
-let text_string = "html_doc= " + text;
+let text_string = "html_text=" + text + "body_doc=" + body_doc;
 let xhr = new XMLHttpRequest();
 let theUrl = "http://127.0.0.1:8000/testing/";
 xhr.open("POST", theUrl, true);
@@ -19,4 +19,7 @@ xhr.onreadystatechange = function() {
     }
 };
 xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
-xhr.send(text_string);
+xhr.send(JSON.stringify({
+    html_text: text,
+    body_doc: body_doc
+}));
