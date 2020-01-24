@@ -26,7 +26,7 @@ def test(request):
     for e in body_text:
         if(classify(e)[0]):
             #print("{} --> {}".format(e,classify(e)[0]))
-            body_html.replace(e,"")
+            body_text.replace(e,"")
     return HttpResponse(body_text)
 
 def classify(txt):
