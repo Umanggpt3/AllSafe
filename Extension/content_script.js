@@ -9,10 +9,10 @@ xhr.open("POST", theUrl, true);
 
 xhr.onreadystatechange = function() {
     if (xhr.readyState == 4){
-        alert("Entered");
+        console.log("Entered");
     }
     else{
-        alert("Not Entered");
+        console.log("Not Entered");
     }
 };
 xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
