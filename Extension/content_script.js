@@ -1,25 +1,23 @@
 let text = document.body.innerText;
-console.log(text);
-console.log(typeof text);
+let body_doc = document.documentElement.innerHTML;
 
-console.log(document.body.innerHTML);
-let body_doc = document.body.innerHTML;
-
-// let text_string = "html_text=" + JSON.jsonify({
-//     html_text: text,
-//     body_doc: body_doc
-// });
 let json_data = {
     body_text : text,
     body_html : body_doc
 }
+
 let xhr = new XMLHttpRequest();
 let theUrl = "http://127.0.0.1:8000/testing/";
 xhr.open("POST", theUrl, true);
-
+let r;
+document.close()
 xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4){
+    if (xhr.readyState == 4 && this.status == 200){
         console.log("Entered");
+        r = this.responseText;
+        console.log(r);
+        console.log(typeof r);
+        manipulateDOM(r);
     }
     else{
         console.log("Not Entered");
@@ -27,3 +25,10 @@ xhr.onreadystatechange = function() {
 };
 xhr.setRequestHeader("Content-Type","application/json;charset=UTF-8");
 xhr.send(JSON.stringify(json_data));
+
+function manipulateDOM(changedDOM) {
+    document.open('text/html');
+    document.write(changedDOM);
+    document.close();
+
+}

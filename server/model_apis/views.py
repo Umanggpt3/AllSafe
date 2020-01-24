@@ -22,7 +22,8 @@ def test(request):
     for e in body_text:
         if(classify(e)[0]):
             print("{} --> {}".format(e,classify(e)[0]))
-    return HttpResponse("Request Recieved!")
+            body_html.replace(e,"")
+    return HttpResponse(body_html)
 
 def classify(txt):
     mnb=pickle.load(open('../ML_Models/saved_classifiers/mnb.pickle','rb'))
