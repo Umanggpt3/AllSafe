@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log("Not Doing It's Magic!");
             });
         }
+        location.reload(true);
     });
     bullybox.addEventListener('change', function() {
         if (bullybox.checked) {
