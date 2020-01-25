@@ -53,3 +53,27 @@ body {
     border: 5px solid #42A5F5;
     height: 160px !important;
 }
+
+#pwdBox{
+    z-index: 15;
+    position: absolute;
+    top: 30%;
+    left: 20%;
+}
+#pwdBtn{
+    z-index: 15;
+    position: absolute;
+    left:55%;
+    top: 30%;
+
+}
+
+#overlay{
+    height: 150%;
+    width:150%;
+    top:-30%;
+    left:-30%;
+    z-index: 10;
+    position: absolute;
+    background-color: rgba(10, 10, 10,0.95);
+}

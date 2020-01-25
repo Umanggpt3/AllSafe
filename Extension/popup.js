@@ -1,5 +1,14 @@
 let checkbox = document.getElementById('turnOnOff');
 let bullybox = document.getElementById('bully');
+document.getElementById("pwdBtn").addEventListener('click',function(){
+    pwd  = document.getElementById("pwdBox").value;
+    if(pwd=="better"){
+        document.getElementById("overlay").style.display="none";
+    }
+
+});
+
+
 
 chrome.storage.local.get(['onOffkey'], function (result) {
     if (result.onOffkey == 1) {

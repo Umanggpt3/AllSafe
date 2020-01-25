@@ -34,7 +34,7 @@ def test(request):
     for w in word_tokenize(body_html):
         if w.lower() in offensive_list:
             pattern=re.compile(r"([^A-Za-z<>]){}([^A-Za-z<>])".format(w))
-            body_html=re.sub(pattern, str(" * ",body_html)
+            body_html=re.sub(pattern, " * ",body_html)
     body_html=body_html.replace("<script","<script async ")
     print("returning")
     return HttpResponse(body_html)    
