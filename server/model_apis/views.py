@@ -17,7 +17,7 @@ def test(request):
     flag=(json.loads(request.body))["flag"]
     body_html  = (json.loads(request.body))["body_html"]
     print("bully content moderation")
-    offensive_list=(pd.read_csv("../Datasets/Offensive_word_list_en.csv")).values.flatten()
+    offensive_list=(pd.read_csv("../Datasets/Offensive_word_list_all.csv",sep='\n')).values.flatten()
     mnb=pickle.load(open('../ML_Models/alt_model.pickle','rb'))
     vect=pickle.load(open('../ML_Models/vectorizer.pickle','rb'))
     b_text=BeautifulSoup(body_html,"lxml").get_text() 
@@ -34,8 +34,9 @@ def test(request):
     for w in word_tokenize(body_html):
         if w.lower() in offensive_list:
             pattern=re.compile(r"([^A-Za-z<>]){}([^A-Za-z<>])".format(w))
-            body_html=re.sub(pattern, str("*"*len(w)),body_html)
+            body_html=re.sub(pattern, str(" * ",body_html)
     body_html=body_html.replace("<script","<script async ")
+    print("returning")
     return HttpResponse(body_html)    
 
 # @csrf_exempt
